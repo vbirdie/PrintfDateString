@@ -45,14 +45,16 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */ 
-//uint32_t myYears;     
+uint8_t lenght;
+uint32_t myYears = 990;     
 //uint32_t myDays;    
 //uint32_t myHours;
-///uint32_t myMinutes;
+//uint32_t myMinutes;
 //uint32_t mySeconds;
-char myStr[50];
-//uint8_t lenght;
-time_t unix_time = 1652382355;
+char myStr[100];
+time_t unix_time = 1652721310;//31535999;//86399;//3599;//59;//0;
+//1652721310 сек = 52 года, 135 дней, 17 часов, 15 минут и 10 секунд
+
 
 /* USER CODE END PV */
 
@@ -111,6 +113,7 @@ int main(void)
   {
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
+    
     unixTimeToString(unix_time, myStr);
     printf (" %s \n", myStr);
     unix_time++;    

@@ -36,23 +36,14 @@ char* years_to_string(uint32_t years, char* years_str, uint8_t* str_lenght)
   char str1[] = " год";
   char str2[] = " года";
   char str3[] = " лет";
-    
+ 
   itoa(years, years_str);
-  
+    
   if (years > 0)
   {
     uint32_t yearsTmp0 = years;    
-    if (years >= 1000000000) yearsTmp0 = years % 1000000000;
-    if (years >= 100000000) yearsTmp0 = years % 100000000;
-    if (years >= 10000000) yearsTmp0 = years % 10000000;
-    if (years >= 1000000) yearsTmp0 = years % 1000000;
-    if (years >= 100000) yearsTmp0 = years % 100000;
-    if (years >= 10000) yearsTmp0 = years % 10000;
-    if (years >= 1000) yearsTmp0 = years % 1000;
     if (years >= 100) yearsTmp0 = years % 100;
   
-    if (yearsTmp0 <= 100)
-    { 
       if ( (yearsTmp0 > 10) && (yearsTmp0 < 20) )
       {
         strncat (years_str, str3, strlen(str3));//лет
@@ -74,7 +65,7 @@ char* years_to_string(uint32_t years, char* years_str, uint8_t* str_lenght)
             strncat (years_str, str3, strlen(str3));//лет
         }       
       }
-    } 
+
   }
   *str_lenght =  strlen(years_str);
   return years_str;
@@ -227,7 +218,7 @@ char* unixTimeToString(time_t unixTime, char* unixTimeStr)
   {
     struct tm* aTm = localtime(&unixTime);  
     uint32_t myYears = aTm->tm_year - 70;
-    uint32_t myDays = aTm->tm_mday - 1;
+    uint32_t myDays = aTm->tm_yday;//-1
     uint32_t myHours = aTm->tm_hour;
     uint32_t myMinutes = aTm->tm_min;
     uint32_t mySeconds = aTm->tm_sec; 
@@ -237,62 +228,92 @@ char* unixTimeToString(time_t unixTime, char* unixTimeStr)
       years_to_string(myYears, unixTimeStr+strlenght, &yearsStrlenght);
       strlenght += yearsStrlenght;
     }
-    
+
     if (myDays != 0)
     {
-      if ((myHours == 0) && (myMinutes == 0) && (mySeconds ==0))
+      if(myYears == 0)
       {
-        strncat (unixTimeStr, str3, strlen(str3)); 
-        strlenght += 3;        
+        ;
       }
       else
       {
-        strncat (unixTimeStr, str2, strlen(str2)); 
-        strlenght += 2;         
-      }      
+        if ((mySeconds ==0) && (myMinutes ==0) && (myHours ==0))
+        {
+          strncat (unixTimeStr, str3, strlen(str3));//" и " 
+          strlenght += 3;           
+        }
+        else
+        {
+          strncat (unixTimeStr, str2, strlen(str2));//", " 
+          strlenght += 2;          
+        }
+      }
       days_to_string(myDays, unixTimeStr+strlenght, &daysStrlenght);
-      strlenght += daysStrlenght;
-    }
+      strlenght += daysStrlenght;                 
+    }     
     
     if (myHours != 0)
     {
-      if ((myMinutes == 0) && (mySeconds ==0))
+      if((myYears == 0) && (myDays == 0))
       {
-        strncat (unixTimeStr, str3, strlen(str3)); 
-        strlenght += 3;        
+        ;
       }
       else
       {
-        strncat (unixTimeStr, str2, strlen(str2)); 
-        strlenght += 2;        
+        if ((mySeconds ==0) && (myMinutes ==0))
+        {
+          strncat (unixTimeStr, str3, strlen(str3));//" и " 
+          strlenght += 3;           
+        }
+        else
+        {
+          strncat (unixTimeStr, str2, strlen(str2));//", " 
+          strlenght += 2;          
+        }
       }
       hours_to_string(myHours, unixTimeStr+strlenght, &hoursStrlenght);
-      strlenght += hoursStrlenght;
-    }   
+      strlenght += hoursStrlenght;                 
+    } 
     
     if (myMinutes != 0)
     {
-      if (mySeconds ==0)
+      if((myYears == 0) && (myDays == 0) && (myHours == 0))
       {
-        strncat (unixTimeStr, str3, strlen(str3)); 
-        strlenght += 3;        
+        ;
       }
       else
       {
-        strncat (unixTimeStr, str2, strlen(str2)); 
-        strlenght += 2;        
+        if (mySeconds ==0)
+        {
+          strncat (unixTimeStr, str3, strlen(str3));//" и " 
+          strlenght += 3;           
+        }
+        else
+        {
+          strncat (unixTimeStr, str2, strlen(str2));//", " 
+          strlenght += 2;          
+        }
       }
       minutes_to_string(myMinutes, unixTimeStr+strlenght, &minutesStrlenght);
-      strlenght += minutesStrlenght;
+      strlenght += minutesStrlenght; 
+      
     }      
      
     if (mySeconds != 0)
     {
-      strncat (unixTimeStr, str3, strlen(str3)); 
-      strlenght += 3;        
+      if((myYears == 0) && (myDays == 0) && (myHours == 0) && (myMinutes == 0))
+      {
+        ;
+      }
+      else
+      {
+        strncat (unixTimeStr, str3, strlen(str3));//" и " 
+        strlenght += 3;   
+      }
       seconds_to_string(mySeconds, unixTimeStr+strlenght, &secondsStrlenght);
-      strlenght += secondsStrlenght;
-    }  
+      strlenght += secondsStrlenght;                 
+    }
+    
   } 
   return unixTimeStr;
 }

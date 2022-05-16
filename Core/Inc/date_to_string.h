@@ -19,7 +19,7 @@ extern "C" {
 
 /* Exported functions prototypes ---------------------------------------------*/
   
-//char* years_to_string(uint32_t years, char* years_str, uint8_t* str_lenght);
+char* years_to_string(uint32_t years, char* years_str, uint8_t* str_lenght);
 //char* days_to_string(uint32_t days, char* days_str, uint8_t* str_lenght);
 //char* hours_to_string(uint32_t hours, char* hours_str, uint8_t* str_lenght);
 //char* minutes_to_string(uint32_t minutes, char* minutes_str, uint8_t* str_lenght);
